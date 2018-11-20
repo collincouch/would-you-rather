@@ -1,28 +1,50 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Question from './Question'
+import QuestionSummary from './QuestionSummary'
 
-
- class QuestionList extends Component {
+class QuestionList extends Component {
   render() {
-    console.log(this.props.notAnsweredQuestionIds)
+    const unAnsweredQuestions = this.props.notAnsweredQuestions
+    const answeredQuestions = this.props.answeredQuestions
     return (
       <div>
-        <h3>Question List</h3>
-        
+        <h3>Unanswered Questions</h3>
+        <ul>
+          {unAnsweredQuestions.map(q => (
+            <li key={q.id}>
+              <QuestionSummary id={q.id} />
+            </li>
+          ))}
+        </ul>
+
+        <h3>Answered Questions</h3>
+        <ul>
+          {answeredQuestions.map(q => (
+            <li key={q.id}>
+              <QuestionSummary id={q.id} />
+            </li>
+          ))}
+        </ul>
       </div>
     )
   }
 }
- function mapStateToProps ({ users, questions, authedUser }) {
-
-  //const notAnsweredQuestionIds = Object.questions.filter(q=>q.author!==authedUser)
-
+function mapStateToProps({ users, questions, authedUser }) {
   return {
-    notAnsweredQuestionIds: Object.questions.filter((q)=>q.author!==authedUser)
-
-
-     
+    notAnsweredQuestions: Object.values(questions)
+      .filter(
+        q =>
+          q.optionOne.votes.includes(authedUser) === false &&
+          q.optionTwo.votes.includes(authedUser) === false
+      )
+      .sort((a, b) => questions.timestamp - questions.timestamp),
+    answeredQuestions: Object.values(questions)
+      .filter(
+        q =>
+          q.optionOne.votes.includes(authedUser) ||
+          q.optionTwo.votes.includes(authedUser)
+      )
+      .sort((a, b) => questions.timestamp - questions.timestamp)
   }
 }
- export default connect(mapStateToProps)(QuestionList) 
+export default connect(mapStateToProps)(QuestionList)

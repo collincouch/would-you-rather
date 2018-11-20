@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import { handleInitialData } from "../actions/shared";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
+import LoadingBar from 'react-redux-loading'
+import Question from "./Question"
+
 
 class App extends Component {
   componentDidMount() {
@@ -13,9 +16,15 @@ class App extends Component {
     return (
       <Router>
         <Fragment>
-       <div>
+        <LoadingBar />
+        <div className='container'>
+          {this.props.loading === true
+              ? null
+              : <div>
           	  <Route path="/" exact component={Dashboard} />
               <Route path="/Login" component={Login} />
+              <Route path='/question/:id' component={Question} />
+              </div>}
           </div>
         </Fragment>
       </Router>
@@ -25,8 +34,7 @@ class App extends Component {
 
 function mapStateToProps ({ authedUser }) {
   return {
-    authedUser: authedUser,
-    loading: authedUser===null
+    loading: authedUser === null
   }
 }
  export default connect(mapStateToProps)(App) 

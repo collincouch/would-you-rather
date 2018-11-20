@@ -1,23 +1,109 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { formatQuestion } from '../utils/helpers'
+import { Link, withRouter } from 'react-router-dom'
+import {handleSaveQuestionAnswer} from '../actions/questions'
+import { Redirect } from 'react-router-dom'
 
+class Question extends Component {
+state = {
+    selectedOption: null,
+    toHome: false,
+  }
 
- class Question extends Component {
+  handleOptionChange = (selectedOption) => {
+    const optionValue = selectedOption.target.value
+    this.setState(() => ({
+      selectedOption: optionValue
+    }))
+  }
+
+handleSubmit = (e) => {
+    e.preventDefault()
+     const { selectedOption } = this.state
+      const { dispatch, question, user } = this.props
+
+     // todo: Add Tweet to Store
+    dispatch(handleSaveQuestionAnswer({
+      qid: question.id,
+      authedUser: user.id,
+      answer:selectedOption
+    }))
+
+     this.setState(() => ({
+   selectedOption: null,
+    toHome: true
+  }))
+   
+  }
+ 
+
   render() {
-    console.log(this.props.question)
+    const question = this.props.question
+    const user = this.props.user
+    const { id, author, optionOne, optionTwo } = question
+    const answer = user.answers[id]
+    const { selectedOption, toHome} = this.state
+
+    if (toHome === true) {
+      return <Redirect to='/' />
+    }
+
     return (
-      <div className='question'>
-        
+      <div>
+      <form onSubmit={this.handleSubmit}>
+        <div className='question'>
+          <div className='author'>Author: {author}</div>
+          {answer ? (
+            <div>
+              <div className='optionOne'>{optionOne.text}</div>
+              <div className='optionTwo'>{optionTwo.text}</div>
+            </div>
+          ) : (
+            <div>
+              <div className='radio'>
+                <label>
+                  <input
+                    type='radio'
+                    value='optionOne'
+                    checked={this.state.selectedOption === 'optionOne'}
+                    onChange={this.handleOptionChange}
+                  />
+                  {optionOne.text}
+                </label>
+              </div>
+              <div className='radio'>
+                <label>
+                  <input
+                    type='radio'
+                    value='optionTwo'
+                    checked={this.state.selectedOption === 'optionTwo'}
+                    onChange={this.handleOptionChange}
+                  />
+                  {optionTwo.text}
+                </label>
+              </div>
+            </div>
+          )}
+        </div>
+        <button
+            className='btn'
+            type='submit'
+            disabled={selectedOption === ''}>
+              Submit
+          </button>
+      </form>
       </div>
     )
   }
 }
- function mapStateToProps ({ users, questions, authedUser },{id}) {
-  const question = questions.filter(b=>b.author!==authedUser)
+function mapStateToProps({ users, questions, authedUser }, props) {
+  const { id } = props.match.params
+  const question = questions[id]
+  const user = users[authedUser]
+
   return {
-    question: formatQuestion(question)
-     
+    question: question,
+    user: user
   }
 }
- export default connect(mapStateToProps)(Question) 
+export default connect(mapStateToProps)(Question)
