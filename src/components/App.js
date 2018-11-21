@@ -6,6 +6,7 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 import LoadingBar from 'react-redux-loading'
 import Question from "./Question"
+import NewPoll from "./NewPoll"
 
 
 class App extends Component {
@@ -18,13 +19,14 @@ class App extends Component {
         <Fragment>
         <LoadingBar />
         <div className='container'>
-          {this.props.loading === true
-              ? null
-              : <div>
-          	  <Route path="/" exact component={Dashboard} />
-              <Route path="/Login" component={Login} />
-              <Route path='/question/:id' component={Question} />
-              </div>}
+
+          <Route path="/Login" component={Login} />
+          <Route path="/" exact component={Dashboard} />
+          <Route path='/question/:id' component={Question} />
+          <Route path='/add' component={NewPoll} />
+          
+          
+        
           </div>
         </Fragment>
       </Router>

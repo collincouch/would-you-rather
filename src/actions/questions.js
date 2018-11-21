@@ -2,7 +2,7 @@ import { saveQuestion, saveQuestionAnswer } from '../utils/api'
 import { showLoading, hideLoading } from 'react-redux-loading'
 
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS'
-export const ADD_QUESTION = 'ADD_QUESTION'
+export const ADD_POLL = 'ADD_POLL'
 export const SAVE_QUESTION_ANSWER = 'SAVE_QUESTION_ANSWER'
 export const SAVE_ANSWER = 'SAVE_ANSWER'
 
@@ -28,11 +28,29 @@ export function handleSaveQuestionAnswer (info) {
     }
 }
 
- function addQuestion(question){
-	return{
-		type:ADD_QUESTION,
-		question,
-	}
+
+function addPoll (question) {
+  return {
+    type: ADD_POLL,
+    question,
+  }
+}
+ export function handleAddPoll (optionOne, optionTwo) {
+  return (dispatch, getState) => {
+    const { authedUser } = getState()
+     dispatch(showLoading())
+     return saveQuestion({
+      optionOneText: optionOne,
+      optionTwoText: optionTwo,
+      author: authedUser,
+    })
+      .catch((e)=>{
+      console.warn('Error in handleAddPoll: ', e)
+      })
+      .then((question) => dispatch(addPoll(question)))
+      .then(() => dispatch(hideLoading()))
+      
+  }
 }
 
 
