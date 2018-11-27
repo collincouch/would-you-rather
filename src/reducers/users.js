@@ -12,11 +12,11 @@ import { RECEIVE_USERS, SAVE_ANSWER } from '../actions/users'
     		...state,
     		//I need to change state of users  here too don't I to add the answer to the users?
     		//
-	        [action.authedUser]: {
-	          ...state[action.authedUser],
+	        [action.authedUser.id]: {
+	          ...state[action.authedUser.id],
 	          answers:
 	          	{
-	         ...state[action.authedUser].answers,
+	         ...state[action.authedUser.id].answers,
 	            [action.qid]: action.answer
 	          }
 	        }

@@ -14,9 +14,9 @@ import { RECEIVE_QUESTIONS, SAVE_QUESTION_ANSWER, ADD_POLL  } from '../actions/q
     			...state[action.qid],
     			[action.answer]:{
     				...state[action.qid][action.answer],
-    				votes: state[action.qid][action.answer].votes.includes([action.authedUser])
-    					? state[action.qid][action.answer].votes((uid)=>uid!==action.authedUser)
-    					: state[action.qid][action.answer].votes.concat([action.authedUser])
+    				votes: state[action.qid][action.answer].votes.includes([action.authedUser.id])
+    					? state[action.qid][action.answer].votes((uid)=>uid!==action.authedUser.id)
+    					: state[action.qid][action.answer].votes.concat([action.authedUser.id])
     			}
     		}
     	}

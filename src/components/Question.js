@@ -21,12 +21,12 @@ class Question extends Component {
   handleSubmit = e => {
     e.preventDefault()
     const { selectedOption } = this.state
-    const { dispatch, question, user } = this.props
+    const { dispatch, question, user, authedUser } = this.props
 
     dispatch(
       handleSaveQuestionAnswer({
         qid: question.id,
-        authedUser: user.id,
+        authedUser: authedUser,
         answer: selectedOption
       })
     )
@@ -46,9 +46,25 @@ class Question extends Component {
   render() {
     const question = this.props.question
     const user = this.props.user
+    if (user === null) {
+      //console.log(this.props.location.pathname)
+      return (
+        <Redirect
+          to={{
+            pathname: '/Login',
+            //search: "?utm=your+face",
+            state: { referrer: this.props.location.pathname }
+          }}
+        />
+      )
+    }
+
     const { id, author, optionOne, optionTwo } = question
+
     const answer = user.answers[id]
     const { selectedOption, toHome } = this.state
+
+    const avatarURL = this.props.avatarURL
 
     if (toHome === true) {
       return <Redirect to='/' />
@@ -58,18 +74,25 @@ class Question extends Component {
       <div>
         <form onSubmit={this.handleSubmit}>
           <div className='question'>
-            <div className='author'>Author: {author}</div>
+            <div className='author'>
+              <img
+                src={avatarURL}
+                alt={`Avatar of ${author}`}
+                className='avatar'
+              />
+              Author: {author}
+            </div>
             {answer ? (
               <div>
                 <div
-                  className={answer === 'optionOne' ? 'authedUserAnswer' : ''}
-                >
+                  className={answer === 'optionOne' ? 'authedUserAnswer' : ''}>
                   {optionOne.text}
+                  Total Votes: {optionOne.votes.length}
                 </div>
                 <div
-                  className={answer === 'optionTwo' ? 'authedUserAnswer' : ''}
-                >
+                  className={answer === 'optionTwo' ? 'authedUserAnswer' : ''}>
                   {optionTwo.text}
+                  Total Votes: {optionTwo.votes.length}
                 </div>
               </div>
             ) : (
@@ -105,8 +128,7 @@ class Question extends Component {
             <button
               className='btn'
               type='submit'
-              disabled={selectedOption === ''}
-            >
+              disabled={selectedOption === ''}>
               Submit
             </button>
           )}
@@ -118,11 +140,19 @@ class Question extends Component {
 function mapStateToProps({ users, questions, authedUser }, props) {
   const { id } = props.match.params
   const question = questions[id]
-  const user = users[authedUser]
+  const user = authedUser !== null ? users[authedUser.id] : null
+
+  const avatarURL =
+    Object.values(users).length !== 0
+      ? Object.values(users).filter(person => person.id === question.author)[0]
+          .avatarURL
+      : ''
 
   return {
     question: question,
-    user: user
+    user: user,
+    authedUser: authedUser,
+    avatarURL: avatarURL
   }
 }
 export default connect(mapStateToProps)(Question)

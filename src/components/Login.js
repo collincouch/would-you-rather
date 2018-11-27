@@ -20,8 +20,17 @@ class Login extends Component {
     e.preventDefault()
     const { selectedOption } = this.state
     const { dispatch } = this.props
+
     //Add AuthedUser to store
-    dispatch(setAuthedUser(selectedOption.value))
+    
+    const selectedUser = {
+      id:selectedOption.value.id,
+      name:selectedOption.value.name,
+      avatarURL: selectedOption.value.avatarURL,
+    }
+
+    console.log(selectedUser)
+    dispatch(setAuthedUser(selectedUser))
     this.setState(() => ({
       selectedOption: null,
       toHome: true
@@ -30,16 +39,28 @@ class Login extends Component {
   render() {
     const { selectedOption, toHome } = this.state
 
-    if (toHome === true) {
-      return <Redirect to='/' />
+    const { authedUser,users } = this.props
+
+    if (authedUser !== null) {
+      if (this.props.location.state.referrer !== '/') {
+        return <Redirect to={this.props.location.state.referrer} />
+      }
+
+      if (toHome === true) {
+        return <Redirect to='/' />
+      }
     }
 
     const options = this.props.userIds.map(val => {
       return {
-        value: val,
+        value: Object.values(users).filter(person => person.id === val)[0],
         label: val
       }
     })
+
+     
+     
+     
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -58,9 +79,11 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps({ users }) {
+function mapStateToProps({ users, authedUser }) {
   return {
-    userIds: Object.keys(users)
+    userIds: Object.keys(users),
+    users:users,
+    authedUser: authedUser
   }
 }
 export default connect(mapStateToProps)(Login)

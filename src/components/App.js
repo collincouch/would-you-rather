@@ -7,6 +7,7 @@ import Dashboard from "./Dashboard";
 import LoadingBar from 'react-redux-loading'
 import Question from "./Question"
 import NewPoll from "./NewPoll"
+import Nav from './Nav'
 
 
 class App extends Component {
@@ -19,14 +20,14 @@ class App extends Component {
         <Fragment>
         <LoadingBar />
         <div className='container'>
-
+          <Nav />
           <Route path="/Login" component={Login} />
           <Route path="/" exact component={Dashboard} />
           <Route path='/question/:id' component={Question} />
           <Route path='/add' component={NewPoll} />
           
           
-        
+
           </div>
         </Fragment>
       </Router>

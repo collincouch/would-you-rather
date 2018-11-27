@@ -42,7 +42,7 @@ function addPoll (question) {
      return saveQuestion({
       optionOneText: optionOne,
       optionTwoText: optionTwo,
-      author: authedUser,
+      author: authedUser.id,
     })
       .catch((e)=>{
       console.warn('Error in handleAddPoll: ', e)

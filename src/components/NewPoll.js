@@ -7,7 +7,8 @@ class NewPoll extends Component {
   state = {
     optionOne: '',
     optionTwo: '',
-    toHome: false
+    toHome: false,
+    referrer:'',
   }
   handleChangeOptionOne = e => {
     const optionOne = e.target.value
@@ -28,17 +29,31 @@ class NewPoll extends Component {
     const { optionOne, optionTwo } = this.state
     const { dispatch, id } = this.props
 
-    
     dispatch(handleAddPoll(optionOne, optionTwo))
     this.setState(() => ({
       optionOne: '',
       optionTwo: '',
-      toHome: true
+      toHome: true,
+      referrer:'',
     }))
   }
 
   render() {
     const { optionOne, optionTwo, toHome } = this.state
+    const { authedUser } = this.props
+
+    console.log(this.props.location.pathname)
+
+    if (authedUser === null) {
+      //return <Redirect to='/Login' />
+        return <Redirect
+          to={{
+            pathname: "/Login",
+      //      //search: "?utm=your+face",
+            state: { referrer: this.props.location.pathname }
+          }}
+        />
+    }
 
     if (toHome === true) {
       return <Redirect to='/' />
@@ -73,4 +88,9 @@ class NewPoll extends Component {
     )
   }
 }
-export default connect()(NewPoll)
+function mapStateToProps({ authedUser }) {
+  return {
+    authedUser: authedUser
+  }
+}
+export default connect(mapStateToProps)(NewPoll)

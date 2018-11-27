@@ -34,17 +34,17 @@ function mapStateToProps({ users, questions, authedUser }) {
     notAnsweredQuestions: Object.values(questions)
       .filter(
         q =>
-          q.optionOne.votes.includes(authedUser) === false &&
-          q.optionTwo.votes.includes(authedUser) === false
+          q.optionOne.votes.includes(authedUser.id) === false &&
+          q.optionTwo.votes.includes(authedUser.id) === false
       )
-      .sort((a, b) => questions.timestamp - questions.timestamp),
+      .sort((a, b) => b.timestamp - a.timestamp),
     answeredQuestions: Object.values(questions)
       .filter(
         q =>
-          q.optionOne.votes.includes(authedUser) ||
-          q.optionTwo.votes.includes(authedUser)
+          q.optionOne.votes.includes(authedUser.id) ||
+          q.optionTwo.votes.includes(authedUser.id)
       )
-      .sort((a, b) => questions.timestamp - questions.timestamp)
+      .sort((a, b) => b.timestamp - a.timestamp)
   }
 }
 export default connect(mapStateToProps)(QuestionList)
