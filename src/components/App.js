@@ -8,6 +8,7 @@ import LoadingBar from 'react-redux-loading'
 import Question from "./Question"
 import NewPoll from "./NewPoll"
 import Nav from './Nav'
+import PageNotFound from './PageNotFound'
 
 
 class App extends Component {
@@ -25,7 +26,7 @@ class App extends Component {
           <Route path="/" exact component={Dashboard} />
           <Route path='/question/:id' component={Question} />
           <Route path='/add' component={NewPoll} />
-          
+          <Route path='/PageNotFound' component={PageNotFound} />
           
 
           </div>

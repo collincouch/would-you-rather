@@ -29,7 +29,7 @@ class Login extends Component {
       avatarURL: selectedOption.value.avatarURL,
     }
 
-    console.log(selectedUser)
+  
     dispatch(setAuthedUser(selectedUser))
     this.setState(() => ({
       selectedOption: null,

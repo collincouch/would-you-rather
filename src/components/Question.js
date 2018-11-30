@@ -4,6 +4,9 @@ import { Link, withRouter } from 'react-router-dom'
 import { handleSaveQuestionAnswer } from '../actions/questions'
 //import {vote} from '../actions/users'
 import { Redirect } from 'react-router-dom'
+import Avatar from '@material-ui/core/Avatar'
+import CheckCircle from '@material-ui/icons/CheckCircle'
+import PageNotFound from './PageNotFound'
 
 class Question extends Component {
   state = {
@@ -59,6 +62,13 @@ class Question extends Component {
       )
     }
 
+    if(!question)
+    {
+      return(
+         <PageNotFound />
+        )
+    }
+
     const { id, author, optionOne, optionTwo } = question
 
     const answer = user.answers[id]
@@ -75,24 +85,24 @@ class Question extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className='question'>
             <div className='author'>
-              <img
-                src={avatarURL}
-                alt={`Avatar of ${author}`}
-                className='avatar'
-              />
+              <Avatar alt={author} src={avatarURL} />
               Author: {author}
+            </div>
+            <div>
+            <h2>Would you rather...</h2>
             </div>
             {answer ? (
               <div>
-                <div
-                  className={answer === 'optionOne' ? 'authedUserAnswer' : ''}>
-                  {optionOne.text}
-                  Total Votes: {optionOne.votes.length}
+                <div>
+                  {optionOne.text} {answer==='optionOne'?<CheckCircle color='primary'/> :' '}
+                  <br/>Total Votes: {optionOne.votes.length}
+                  <br/>Percentage: {optionOne.votes.length/(optionOne.votes.length+ optionTwo.votes.length)}%
                 </div>
-                <div
-                  className={answer === 'optionTwo' ? 'authedUserAnswer' : ''}>
-                  {optionTwo.text}
-                  Total Votes: {optionTwo.votes.length}
+                <p>or</p>
+                <div>
+                  {optionTwo.text} {answer==='optionTwo'?<CheckCircle color='primary'/> :' '}
+                  <br/>Total Votes: {optionTwo.votes.length}
+                  <br/>Percentage: {optionTwo.votes.length/(optionOne.votes.length + optionTwo.votes.length)}%
                 </div>
               </div>
             ) : (
@@ -123,7 +133,7 @@ class Question extends Component {
             )}
           </div>
           {answer ? (
-            <div>Statistics here.</div>
+            <div><p>Return <Link to='/'>Home</Link></p></div>
           ) : (
             <button
               className='btn'
