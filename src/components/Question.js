@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { handleSaveQuestionAnswer } from '../actions/questions'
-//import {vote} from '../actions/users'
 import { Redirect } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import CheckCircle from '@material-ui/icons/CheckCircle'
@@ -24,7 +23,7 @@ class Question extends Component {
   handleSubmit = e => {
     e.preventDefault()
     const { selectedOption } = this.state
-    const { dispatch, question, user, authedUser } = this.props
+    const { dispatch, question, authedUser } = this.props
 
     dispatch(
       handleSaveQuestionAnswer({
@@ -34,11 +33,6 @@ class Question extends Component {
       })
     )
 
-    //dispatch(vote({
-    //  qid: question.id,
-    //  authedUser: user.id,
-    //  answer:selectedOption
-    //}))
 
     this.setState(() => ({
       selectedOption: null,
@@ -62,11 +56,8 @@ class Question extends Component {
       )
     }
 
-    if(!question)
-    {
-      return(
-         <PageNotFound />
-        )
+    if (!question) {
+      return <PageNotFound />
     }
 
     const { id, author, optionOne, optionTwo } = question
@@ -89,20 +80,40 @@ class Question extends Component {
               Author: {author}
             </div>
             <div>
-            <h2>Would you rather...</h2>
+              <h2>Would you rather...</h2>
             </div>
             {answer ? (
               <div>
                 <div>
-                  {optionOne.text} {answer==='optionOne'?<CheckCircle color='primary'/> :' '}
-                  <br/>Total Votes: {optionOne.votes.length}
-                  <br/>Percentage: {optionOne.votes.length/(optionOne.votes.length+ optionTwo.votes.length)}%
+                  {optionOne.text}{' '}
+                  {answer === 'optionOne' ? (
+                    <CheckCircle color='primary' />
+                  ) : (
+                    ' '
+                  )}
+                  <br />
+                  Total Votes: {optionOne.votes.length}
+                  <br />
+                  Percentage:{' '}
+                  {optionOne.votes.length /
+                    (optionOne.votes.length + optionTwo.votes.length)}
+                  %
                 </div>
                 <p>or</p>
                 <div>
-                  {optionTwo.text} {answer==='optionTwo'?<CheckCircle color='primary'/> :' '}
-                  <br/>Total Votes: {optionTwo.votes.length}
-                  <br/>Percentage: {optionTwo.votes.length/(optionOne.votes.length + optionTwo.votes.length)}%
+                  {optionTwo.text}{' '}
+                  {answer === 'optionTwo' ? (
+                    <CheckCircle color='primary' />
+                  ) : (
+                    ' '
+                  )}
+                  <br />
+                  Total Votes: {optionTwo.votes.length}
+                  <br />
+                  Percentage:{' '}
+                  {optionTwo.votes.length /
+                    (optionOne.votes.length + optionTwo.votes.length)}
+                  %
                 </div>
               </div>
             ) : (
@@ -133,7 +144,11 @@ class Question extends Component {
             )}
           </div>
           {answer ? (
-            <div><p>Return <Link to='/'>Home</Link></p></div>
+            <div>
+              <p>
+                Return <Link to='/'>Home</Link>
+              </p>
+            </div>
           ) : (
             <button
               className='btn'

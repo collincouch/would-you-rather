@@ -62,7 +62,8 @@ class Login extends Component {
      
      
     return (
-      <div>
+      <div className='center'>
+      <h3>Login</h3>
         <form onSubmit={this.handleSubmit}>
           <Select
             value={selectedOption}

@@ -8,14 +8,11 @@ export function receiveUsers(users) {
   }
 }
 
-
-
-
-export function vote({qid,authedUser,answer}){
-	return{
-		type:SAVE_ANSWER,
-		qid,
-		authedUser,
-		answer
-	}
+export function vote({ qid, authedUser, answer }) {
+  return {
+    type: SAVE_ANSWER,
+    qid,
+    authedUser,
+    answer
+  }
 }

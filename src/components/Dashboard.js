@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import QuestionSummary from './QuestionSummary'
 import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -11,7 +10,6 @@ import Tab from '@material-ui/core/Tab'
 import List from '@material-ui/core/List'
 import QuestionListItem from './QuestionListItem'
 import Typography from '@material-ui/core/Typography'
-
 
 function TabContainer(props) {
   return (
@@ -70,7 +68,7 @@ class Dashboard extends Component {
     }
 
     return (
-      <div>
+      <div className='center'>
         <h3 className='center'>Would you rather</h3>
         <div className={classes.root}>
           <AppBar position='static'>
@@ -82,19 +80,17 @@ class Dashboard extends Component {
           {value === 0 && (
             <TabContainer>
               <List className={classes.root}>
-              
-              {unAnsweredQuestions.map(q => (
-                <QuestionListItem key={q.id} id={q.id}/>
-              ))}
+                {unAnsweredQuestions.map(q => (
+                  <QuestionListItem key={q.id} id={q.id} />
+                ))}
               </List>
-              
             </TabContainer>
           )}
           {value === 1 && (
             <TabContainer>
               <List className={classes.root}>
                 {answeredQuestions.map(q => (
-                  <QuestionListItem key={q.id} id={q.id}/>
+                  <QuestionListItem key={q.id} id={q.id} />
                 ))}
               </List>
             </TabContainer>
@@ -105,25 +101,29 @@ class Dashboard extends Component {
   }
 }
 function mapStateToProps({ users, questions, authedUser }) {
- 
   return {
     authedUser: authedUser,
-    unAnsweredQuestions: authedUser!==null?Object.values(questions)
-      .filter(
-        q =>
-          q.optionOne.votes.includes(authedUser.id) === false &&
-          q.optionTwo.votes.includes(authedUser.id) === false
-      )
-      .sort((a, b) => b.timestamp - a.timestamp):null,
-    answeredQuestions: authedUser!==null?Object.values(questions)
-      .filter(
-        q =>
-          q.optionOne.votes.includes(authedUser.id) ||
-          q.optionTwo.votes.includes(authedUser.id)
-      )
-      .sort((a, b) => b.timestamp - a.timestamp):null
+    unAnsweredQuestions:
+      authedUser !== null
+        ? Object.values(questions)
+            .filter(
+              q =>
+                q.optionOne.votes.includes(authedUser.id) === false &&
+                q.optionTwo.votes.includes(authedUser.id) === false
+            )
+            .sort((a, b) => b.timestamp - a.timestamp)
+        : null,
+    answeredQuestions:
+      authedUser !== null
+        ? Object.values(questions)
+            .filter(
+              q =>
+                q.optionOne.votes.includes(authedUser.id) ||
+                q.optionTwo.votes.includes(authedUser.id)
+            )
+            .sort((a, b) => b.timestamp - a.timestamp)
+        : null
   }
- 
 }
 
 Dashboard.propTypes = {

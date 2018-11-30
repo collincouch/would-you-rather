@@ -8,18 +8,6 @@ import Avatar from '@material-ui/core/Avatar'
 
 import Typography from '@material-ui/core/Typography'
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
-  },
-  inline: {
-    display: 'inline'
-  }
-})
-
 class QuestionListItem extends Component {
   render() {
     const { question, authedUser, avatarURL } = this.props
@@ -27,7 +15,7 @@ class QuestionListItem extends Component {
     const classes = this.props
 
     //const id = this.props.id
-    const { id, author, optionOne, optionTwo } = question
+    const { id, author, optionOne} = question
 
     if (authedUser === null) {
       //return <Redirect to='/Login' />
@@ -54,8 +42,7 @@ class QuestionListItem extends Component {
               <Typography
                 component='span'
                 className={classes.inline}
-                color='textPrimary'
-              >
+                color='textPrimary'>
                 {author}
               </Typography>
               {optionOne.text} or ...

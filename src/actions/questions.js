@@ -13,67 +13,56 @@ export function receiveQuestions(questions) {
   }
 }
 
-
-export function handleSaveQuestionAnswer (info) {
-  return (dispatch) => {
-     dispatch(vote(info))
-     dispatch(updateUser(info))
-     return saveQuestionAnswer(info)
-      .catch((e) => {
-        console.warn('Error in handleSaveQuestionAnswer: ', e)
-        dispatch(vote(info))
-        dispatch(updateUser(info))
-        alert('There was an error saving your answer. Try again.')
-      })
-    }
+export function handleSaveQuestionAnswer(info) {
+  return dispatch => {
+    dispatch(vote(info))
+    dispatch(updateUser(info))
+    return saveQuestionAnswer(info).catch(e => {
+      console.warn('Error in handleSaveQuestionAnswer: ', e)
+      dispatch(vote(info))
+      dispatch(updateUser(info))
+      alert('There was an error saving your answer. Try again.')
+    })
+  }
 }
 
-
-function addPoll (question) {
+function addPoll(question) {
   return {
     type: ADD_POLL,
-    question,
+    question
   }
 }
- export function handleAddPoll (optionOne, optionTwo) {
+export function handleAddPoll(optionOne, optionTwo) {
   return (dispatch, getState) => {
     const { authedUser } = getState()
-     dispatch(showLoading())
-     return saveQuestion({
+    dispatch(showLoading())
+    return saveQuestion({
       optionOneText: optionOne,
       optionTwoText: optionTwo,
-      author: authedUser.id,
+      author: authedUser.id
     })
-      .catch((e)=>{
-      console.warn('Error in handleAddPoll: ', e)
+      .catch(e => {
+        console.warn('Error in handleAddPoll: ', e)
       })
-      .then((question) => dispatch(addPoll(question)))
+      .then(question => dispatch(addPoll(question)))
       .then(() => dispatch(hideLoading()))
-      
   }
 }
 
-
-function vote({qid,authedUser,answer}){
-	return{
-		type:SAVE_QUESTION_ANSWER,
-		qid,
-		authedUser,
-		answer
-	}
-}
-
-
-function updateUser({qid,authedUser,answer}){
-  return{
-    type:SAVE_ANSWER,
+function vote({ qid, authedUser, answer }) {
+  return {
+    type: SAVE_QUESTION_ANSWER,
     qid,
     authedUser,
     answer
   }
 }
 
-
-
-
-
+function updateUser({ qid, authedUser, answer }) {
+  return {
+    type: SAVE_ANSWER,
+    qid,
+    authedUser,
+    answer
+  }
+}

@@ -8,7 +8,7 @@ class NewPoll extends Component {
     optionOne: '',
     optionTwo: '',
     toHome: false,
-    referrer:'',
+    referrer: ''
   }
   handleChangeOptionOne = e => {
     const optionOne = e.target.value
@@ -27,14 +27,14 @@ class NewPoll extends Component {
   handleSubmit = e => {
     e.preventDefault()
     const { optionOne, optionTwo } = this.state
-    const { dispatch, id } = this.props
+    const { dispatch} = this.props
 
     dispatch(handleAddPoll(optionOne, optionTwo))
     this.setState(() => ({
       optionOne: '',
       optionTwo: '',
       toHome: true,
-      referrer:'',
+      referrer: ''
     }))
   }
 
@@ -42,17 +42,19 @@ class NewPoll extends Component {
     const { optionOne, optionTwo, toHome } = this.state
     const { authedUser } = this.props
 
-    console.log(this.props.location.pathname)
+    //console.log(this.props.location.pathname)
 
     if (authedUser === null) {
       //return <Redirect to='/Login' />
-        return <Redirect
+      return (
+        <Redirect
           to={{
-            pathname: "/Login",
-      //      //search: "?utm=your+face",
+            pathname: '/Login',
+            //      //search: "?utm=your+face",
             state: { referrer: this.props.location.pathname }
           }}
         />
+      )
     }
 
     if (toHome === true) {
@@ -60,7 +62,7 @@ class NewPoll extends Component {
     }
 
     return (
-      <div>
+      <div class='center'>
         <h3 className='center'>Would you rather...</h3>
         <form className='new-tweet' onSubmit={this.handleSubmit}>
           <textarea
