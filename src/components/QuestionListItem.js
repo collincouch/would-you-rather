@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
 import ListItem from '@material-ui/core/ListItem'
@@ -8,11 +8,10 @@ import Avatar from '@material-ui/core/Avatar'
 
 import Typography from '@material-ui/core/Typography'
 
-class QuestionListItem extends Component {
-  render() {
-    const { question, authedUser, avatarURL } = this.props
+const QuestionListItem = props => {
+    const { question, authedUser, avatarURL } = props
     //const authedUser = this.props.authedUser
-    const classes = this.props
+    const classes = props
 
     //const id = this.props.id
     const { id, author, optionOne} = question
@@ -51,7 +50,6 @@ class QuestionListItem extends Component {
         />
       </ListItem>
     )
-  }
 }
 
 function mapStateToProps({ users, questions, authedUser }, { id }) {

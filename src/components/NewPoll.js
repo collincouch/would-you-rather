@@ -62,7 +62,7 @@ class NewPoll extends Component {
     }
 
     return (
-      <div class='center'>
+      <div className='center'>
         <h3 className='center'>Would you rather...</h3>
         <form className='new-tweet' onSubmit={this.handleSubmit}>
           <textarea

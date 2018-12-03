@@ -10,7 +10,6 @@ import PageNotFound from './PageNotFound'
 class Question extends Component {
   state = {
     selectedOption: null,
-    toHome: false
   }
 
   handleOptionChange = selectedOption => {
@@ -36,7 +35,6 @@ class Question extends Component {
 
     this.setState(() => ({
       selectedOption: null,
-      toHome: true
     }))
   }
 
@@ -63,13 +61,9 @@ class Question extends Component {
     const { id, author, optionOne, optionTwo } = question
 
     const answer = user.answers[id]
-    const { selectedOption, toHome } = this.state
+    const { selectedOption} = this.state
 
     const avatarURL = this.props.avatarURL
-
-    if (toHome === true) {
-      return <Redirect to='/' />
-    }
 
     return (
       <div>
@@ -95,8 +89,8 @@ class Question extends Component {
                   Total Votes: {optionOne.votes.length}
                   <br />
                   Percentage:{' '}
-                  {optionOne.votes.length /
-                    (optionOne.votes.length + optionTwo.votes.length)}
+                  {Math.floor((optionOne.votes.length /
+                    (optionOne.votes.length + optionTwo.votes.length)) * 100)}
                   %
                 </div>
                 <p>or</p>
@@ -111,8 +105,8 @@ class Question extends Component {
                   Total Votes: {optionTwo.votes.length}
                   <br />
                   Percentage:{' '}
-                  {optionTwo.votes.length /
-                    (optionOne.votes.length + optionTwo.votes.length)}
+                  {Math.floor((optionTwo.votes.length /
+                    (optionOne.votes.length + optionTwo.votes.length)) * 100)}
                   %
                 </div>
               </div>
@@ -168,7 +162,7 @@ function mapStateToProps({ users, questions, authedUser }, props) {
   const user = authedUser !== null ? users[authedUser.id] : null
 
   const avatarURL =
-    Object.values(users).length !== 0
+    Object.values(users).length !== 0 && question!==undefined
       ? Object.values(users).filter(person => person.id === question.author)[0]
           .avatarURL
       : ''
