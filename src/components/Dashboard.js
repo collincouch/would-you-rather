@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 
 function TabContainer(props) {
   return (
-    <Typography component='div' style={{ padding: 8 * 3 }}>
+    <Typography component="div" style={{ padding: 8 * 3 }}>
       {props.children}
     </Typography>
   )
@@ -68,13 +68,13 @@ class Dashboard extends Component {
     }
 
     return (
-      <div className='center'>
-        <h3 className='center'>Would you rather</h3>
+      <div className="center">
+        <h3 className="center">Would you rather</h3>
         <div className={classes.root}>
-          <AppBar position='static'>
+          <AppBar position="static">
             <Tabs value={value} onChange={this.handleChange}>
-              <Tab label='Unanswered Polls' />
-              <Tab label='Answered Polls' />
+              <Tab label="Unanswered Polls" />
+              <Tab label="Answered Polls" />
             </Tabs>
           </AppBar>
           {value === 0 && (
